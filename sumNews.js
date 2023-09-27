@@ -7,8 +7,7 @@ const toggleThemeButton = document.getElementById('toggle-theme-button');
 const themeStyle = document.getElementById('theme-style');
 let page = 1;
 
-// Extend the cache expiration time to 1 hour (3600 seconds)
-const cacheExpirationTime = 3600 * 1000; // 1 hour in milliseconds
+const cacheExpirationTime = 3600 * 1000;
 
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme) {
@@ -72,11 +71,9 @@ async function fetchNewsAndDisplay({ category, searchQuery, selectedCountry }) {
         if (cachedData) {
             const data = JSON.parse(cachedData);
             if (currentTime - data.timestamp < cacheExpirationTime) {
-                // Data is still fresh, use it
                 displayNews(data.articles);
                 return;
             } else {
-                // Data has expired, remove it from cache
                 localStorage.removeItem(cacheKey);
             }
         }
@@ -86,7 +83,6 @@ async function fetchNewsAndDisplay({ category, searchQuery, selectedCountry }) {
         const data = await response.json();
 
         if (data.status === 'ok') {
-            // Store data in cache with timestamp
             data.timestamp = currentTime;
             localStorage.setItem(cacheKey, JSON.stringify(data));
             displayNews(data.articles);
